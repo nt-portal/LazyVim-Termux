@@ -6,7 +6,9 @@ A simple script to install and configure LazyVim in Termux.
 
 To install, run the following command in Termux:
 
+```
 curl -sL https://raw.githubusercontent.com/nt-portal/LazyVim-Termux/main/install.sh | bash
+```
 
 ## Features
 
