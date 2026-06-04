@@ -16,4 +16,5 @@ curl -sL https://raw.githubusercontent.com/nt-portal/LazyVim-Termux/main/install
 - Installs LazyVim starter.
 - Custom font setup.
 - WakaTime plugin included.
+- Markview plugin included.
 - Noice plugin disabled for performance.

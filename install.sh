@@ -56,6 +56,19 @@ return {
 }
 EOF
 
+# Add Markview plugin
+echo "Configuring Markview..."
+cat <<EOF > "$HOME/.config/nvim/lua/plugins/markview.lua"
+return {
+    "OXY2DEV/markview.nvim",
+    lazy = false,
+
+    config = function()
+        require("markview").setup()
+    end,
+}
+EOF
+
 # Reload Termux settings to apply font
 termux-reload-settings
 
