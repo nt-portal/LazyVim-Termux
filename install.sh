@@ -1,75 +1,85 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-# Update and install dependencies
-pkg update -y
-pkg install -y neovim git curl
+set -e
 
-# Required: backup existing nvim config
+pkg update -y
+pkg install -y openssl openssl-tool libssl
+pkg upgrade -y
+pkg install -y neovim git curl wget
+
 if [ -d "$HOME/.config/nvim" ]; then
-    echo "Backing up existing nvim config..."
-    mv "$HOME/.config/nvim" "$HOME/.config/nvim.bak"
+    mv "$HOME/.config/nvim" "$HOME/.config/nvim.bak.$(date +%s)"
 fi
 
-# Optional but recommended: backup other nvim related dirs
 for dir in "$HOME/.local/share/nvim" "$HOME/.local/state/nvim" "$HOME/.cache/nvim"; do
-    if [ -d "$dir" ]; then
-        echo "Backing up $dir..."
-        mv "$dir" "$dir.bak"
-    fi
+    [ -d "$dir" ] && mv "$dir" "${dir}.bak.$(date +%s)"
 done
 
-# Clone LazyVim starter
-echo "Cloning LazyVim starter..."
 git clone https://github.com/LazyVim/starter "$HOME/.config/nvim"
-
-# Remove .git from the cloned config
 rm -rf "$HOME/.config/nvim/.git"
 
-# Setup font
-echo "Setting up font..."
 mkdir -p "$HOME/.termux"
-curl -L -o "$HOME/.termux/font.ttf" "https://github.com/nt-portal/LazyVim-Termux/raw/main/assest/font.ttf"
+FONT_URL="https://github.com/nt-portal/LazyVim-Termux/raw/main/assest/font.ttf"
+FONT_DEST="$HOME/.termux/font.ttf"
 
-# Create plugins directory
-mkdir -p "$HOME/.config/nvim/lua/plugins"
+if wget -q -O "$FONT_DEST" "$FONT_URL"; then
+    echo "Font downloaded (wget)"
+elif curl -fL -o "$FONT_DEST" "$FONT_URL"; then
+    echo "Font downloaded (curl)"
+else
+    echo "WARNING: Gagal download font, skip"
+fi
 
-# Add WakaTime plugin
-echo "Configuring WakaTime..."
-cat <<EOF > "$HOME/.config/nvim/lua/plugins/wakatime.lua"
+PLUGINS="$HOME/.config/nvim/lua/plugins"
+mkdir -p "$PLUGINS"
+
+cat > "$PLUGINS/wakatime.lua" <<'EOF'
 return {
   {
     "wakatime/vim-wakatime",
     lazy = false,
-    event = { "BufReadPost", "BufNewFile" },
   },
 }
 EOF
 
-# Disable Noice plugin
-echo "Disabling Noice..."
-cat <<EOF > "$HOME/.config/nvim/lua/plugins/noice-disable.lua"
+cat > "$PLUGINS/noice-disable.lua" <<'EOF'
 return {
   {
     "folke/noice.nvim",
     enabled = false,
   },
+  {
+    "rcarriga/nvim-notify",
+    enabled = false,
+  },
 }
 EOF
 
-# Add Markview plugin
-echo "Configuring Markview..."
-cat <<EOF > "$HOME/.config/nvim/lua/plugins/markview.lua"
+cat > "$PLUGINS/markview.lua" <<'EOF'
 return {
+  {
     "OXY2DEV/markview.nvim",
     lazy = false,
-
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    },
     config = function()
-        require("markview").setup()
+      require("markview").setup()
     end,
+  },
 }
 EOF
 
-# Reload Termux settings to apply font
-termux-reload-settings
+cat >> "$HOME/.config/nvim/lua/config/options.lua" <<'EOF'
 
-echo "Installation complete! Run 'nvim' to start LazyVim."
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+vim.opt.termguicolors = true
+vim.opt.mouse = "a"
+vim.opt.conceallevel = 2
+EOF
+
+termux-reload-settings 2>/dev/null || true
+
+echo "Done! Restart Termux lalu ketik: nvim"
