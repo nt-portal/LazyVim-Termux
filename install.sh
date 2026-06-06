@@ -3,7 +3,7 @@
 set -e
 
 pkg update -y
-pkg install -y openssl openssl-tool libssl
+pkg install -y openssl openssl-tool
 pkg upgrade -y
 pkg install -y neovim git curl wget
 
