@@ -47,4 +47,4 @@ curl -fL -o ~/.termux/font.ttf "https://github.com/nt-portal/LazyVim-Termux/raw/
 
 termux-reload-settings
 
-nvim
+exit
