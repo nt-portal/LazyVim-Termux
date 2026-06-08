@@ -43,6 +43,25 @@ echo 'return {
   },
 }' > "$PLUGINS/markview.lua"
 
+cat > "$PLUGINS/transparent.lua" << 'EOF'
+return {
+  "xiyaowong/transparent.nvim",
+  lazy = false,
+  priority = 1000,
+  config = function()
+    require("transparent").setup({
+      extra_groups = {
+        "NormalFloat",
+        "NeoTreeNormal",
+        "NeoTreeNormalNC",
+        "Dashboard",
+      },
+    })
+    vim.g.transparent_enabled = true
+  end,
+}
+EOF
+
 curl -fL -o ~/.termux/font.ttf "https://github.com/nt-portal/LazyVim-Termux/raw/main/assest/font.ttf"
 
 termux-reload-settings

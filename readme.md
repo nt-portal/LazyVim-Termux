@@ -18,3 +18,6 @@ curl -sL https://raw.githubusercontent.com/nt-portal/LazyVim-Termux/main/install
 - WakaTime plugin included.
 - Markview plugin included.
 - Noice plugin disabled for performance.
+
+---
+[Donate](https://saweria.co/ntdonate) for my needs. 😕
