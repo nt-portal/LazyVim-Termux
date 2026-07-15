@@ -1,4 +1,6 @@
-pkg install -y git neovim
+#!bash/Termux LazyVim
+clear
+apt install -y git neovim nodejs yarn
 
 mv ~/.config/nvim{,.bak}
 mv ~/.local/share/nvim{,.bak}
@@ -16,7 +18,7 @@ echo 'return {
     "wakatime/vim-wakatime",
     lazy = false,
   },
-}' > "$PLUGINS/wakatime.lua"
+}' >"$PLUGINS/wakatime.lua"
 
 echo 'return {
   {
@@ -27,7 +29,7 @@ echo 'return {
     "rcarriga/nvim-notify",
     enabled = false,
   },
-}' > "$PLUGINS/noice-disable.lua"
+}' >"$PLUGINS/noice-disable.lua"
 
 echo 'return {
   {
@@ -41,9 +43,9 @@ echo 'return {
       require("markview").setup()
     end,
   },
-}' > "$PLUGINS/markview.lua"
+}' >"$PLUGINS/markview.lua"
 
-cat > "$PLUGINS/transparent.lua" << 'EOF'
+cat >"$PLUGINS/transparent.lua" <<'EOF'
 return {
   "xiyaowong/transparent.nvim",
   lazy = false,
@@ -59,6 +61,43 @@ return {
     })
     vim.g.transparent_enabled = true
   end,
+}
+EOF
+
+cat >"$PLUGINS/markmap.lua" <<'EOF'
+return {
+  {
+    "Zeioth/markmap.nvim",
+    build = "yarn global add markmap-cli",
+    cmd = {
+      "MarkmapOpen",
+      "MarkmapSave",
+      "MarkmapWatch",
+      "MarkmapWatchStop",
+    },
+  },
+}
+EOF
+
+cat >"$PLUGINS/codecompanion.lua" <<'EOF'
+return {
+  {
+    "olimorris/codecompanion.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    opts = {
+      strategies = {
+        chat = {
+          adapter = "gemini",
+        },
+        inline = {
+          adapter = "gemini",
+        },
+      },
+    },
+  },
 }
 EOF
 
