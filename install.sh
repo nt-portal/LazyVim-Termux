@@ -1,6 +1,6 @@
 #!bash/Termux LazyVim
 clear
-apt install -y git neovim nodejs yarn
+apt install -y git neovim nodejs yarn fd
 
 mv ~/.config/nvim{,.bak}
 mv ~/.local/share/nvim{,.bak}
