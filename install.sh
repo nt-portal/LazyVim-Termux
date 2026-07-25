@@ -101,6 +101,15 @@ return {
 }
 EOF
 
+cat >"$PLUGINS/error-lens.lua" <<'EOF'
+return {
+  "chikko80/error-lens.nvim",
+  event = "LspAttach",
+  opts = {},
+}
+}
+EOF
+
 curl -fL -o ~/.termux/font.ttf "https://github.com/nt-portal/LazyVim-Termux/raw/main/assest/font.ttf"
 
 termux-reload-settings
