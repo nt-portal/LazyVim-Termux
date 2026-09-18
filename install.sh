@@ -1,11 +1,15 @@
-#!bash/Termux LazyVim
+#!/data/data/com.termux/files/usr/bin/bash
+set -e
 clear
-apt install -y git neovim nodejs yarn fd
+pkg install -y git neovim nodejs yarn fd grep clang curl
 
-mv ~/.config/nvim{,.bak}
-mv ~/.local/share/nvim{,.bak}
-mv ~/.local/state/nvim{,.bak}
-mv ~/.cache/nvim{,.bak}
+mkdir -p ~/.config ~/.termux ~/.cache
+mkdir -p ~/.local/share ~/.local/state
+
+[ -e ~/.config/nvim ] || [ -L ~/.config/nvim ] && mv ~/.config/nvim ~/.config/nvim.bak || true
+[ -e ~/.local/share/nvim ] || [ -L ~/.local/share/nvim ] && mv ~/.local/share/nvim ~/.local/share/nvim.bak || true
+[ -e ~/.local/state/nvim ] || [ -L ~/.local/state/nvim ] && mv ~/.local/state/nvim ~/.local/state/nvim.bak || true
+[ -e ~/.cache/nvim ] || [ -L ~/.cache/nvim ] && mv ~/.cache/nvim ~/.cache/nvim.bak || true
 
 git clone https://github.com/LazyVim/starter ~/.config/nvim
 rm -rf ~/.config/nvim/.git
@@ -13,102 +17,10 @@ rm -rf ~/.config/nvim/.git
 PLUGINS="$HOME/.config/nvim/lua/plugins"
 mkdir -p "$PLUGINS"
 
-echo 'return {
-  {
-    "wakatime/vim-wakatime",
-    lazy = false,
-  },
-}' >"$PLUGINS/wakatime.lua"
-
-echo 'return {
-  {
-    "folke/noice.nvim",
-    enabled = false,
-  },
-  {
-    "rcarriga/nvim-notify",
-    enabled = false,
-  },
-}' >"$PLUGINS/noice-disable.lua"
-
-echo 'return {
-  {
-    "OXY2DEV/markview.nvim",
-    lazy = false,
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "nvim-tree/nvim-web-devicons",
-    },
-    config = function()
-      require("markview").setup()
-    end,
-  },
-}' >"$PLUGINS/markview.lua"
-
-cat >"$PLUGINS/transparent.lua" <<'EOF'
-return {
-  "xiyaowong/transparent.nvim",
-  lazy = false,
-  priority = 1000,
-  config = function()
-    require("transparent").setup({
-      extra_groups = {
-        "NormalFloat",
-        "NeoTreeNormal",
-        "NeoTreeNormalNC",
-        "Dashboard",
-      },
-    })
-    vim.g.transparent_enabled = true
-  end,
-}
-EOF
-
-cat >"$PLUGINS/markmap.lua" <<'EOF'
-return {
-  {
-    "Zeioth/markmap.nvim",
-    build = "yarn global add markmap-cli",
-    cmd = {
-      "MarkmapOpen",
-      "MarkmapSave",
-      "MarkmapWatch",
-      "MarkmapWatchStop",
-    },
-  },
-}
-EOF
-
-cat >"$PLUGINS/codecompanion.lua" <<'EOF'
-return {
-  {
-    "olimorris/codecompanion.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-    },
-    opts = {
-      strategies = {
-        chat = {
-          adapter = "gemini",
-        },
-        inline = {
-          adapter = "gemini",
-        },
-      },
-    },
-  },
-}
-EOF
-
-cat >"$PLUGINS/error-lens.lua" <<'EOF'
-return {
-  "chikko80/error-lens.nvim",
-  event = "LspAttach",
-  opts = {},
-}
-}
-EOF
+BASE="https://raw.githubusercontent.com/nt-portal/LazyVim-Termux/main/plugins"
+for p in wakatime noice-disable markview transparent markmap codecompanion error-lens; do
+  curl -fL -o "$PLUGINS/$p.lua" "$BASE/$p.lua"
+done
 
 curl -fL -o ~/.termux/font.ttf "https://github.com/nt-portal/LazyVim-Termux/raw/main/assest/font.ttf"
 
