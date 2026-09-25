@@ -28,6 +28,12 @@ curl -sL https://raw.githubusercontent.com/nt-portal/LazyVim-Termux/main/install
 
 > Script otomatis: `pkg install` deps, `mkdir -p` semua path (anti-blank), backup skip-jika-tidak-ada, deploy `plugins/` modular.
 
+## 📖 Dokumentasi Lengkap
+
+Panduan cara pakai semua fitur, keybinding, ganti provider AI, dan troubleshooting:
+
+**👉 [docs/LEARN.md](./docs/LEARN.md)**
+
 ## ✨ Features
 
 | | Detail |
@@ -46,7 +52,9 @@ curl -sL https://raw.githubusercontent.com/nt-portal/LazyVim-Termux/main/install
 | [OXY2DEV/markview.nvim](https://github.com/OXY2DEV/markview.nvim) | ✅ |
 | [xiyaowong/transparent.nvim](https://github.com/xiyaowong/transparent.nvim) | ✅ |
 | [Zeioth/markmap.nvim](https://github.com/Zeioth/markmap.nvim) | `Markmap*` cmds |
-| [olimorris/codecompanion.nvim](https://github.com/olimorris/codecompanion.nvim) | Gemini adapter |
+| [olimorris/codecompanion.nvim](https://github.com/olimorris/codecompanion.nvim) | OpenAI adapter |
+| [milanglacier/minuet-ai.nvim](https://github.com/milanglacier/minuet-ai.nvim) | AI autocomplete |
+| [Mofiqul/dracula.nvim](https://github.com/Mofiqul/dracula.nvim) | 🎨 Dracula theme |
 | [chikko80/error-lens.nvim](https://github.com/chikko80/error-lens.nvim) | `LspAttach` |
 | [folke/noice.nvim](https://github.com/folke/noice.nvim) | ❌ disabled |
 
