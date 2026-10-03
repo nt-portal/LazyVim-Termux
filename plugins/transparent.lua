@@ -1,3 +1,5 @@
+-- transparent.nvim — background Neovim transparan, mengikuti wallpaper Termux.
+
 return {
   "xiyaowong/transparent.nvim",
   lazy = false,

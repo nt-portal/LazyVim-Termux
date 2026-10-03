@@ -1,3 +1,6 @@
+-- markmap.nvim — mind map visual dari file Markdown.
+-- Membutuhkan markmap-cli, diinstall otomatis lewat build.
+
 return {
   {
     "Zeioth/markmap.nvim",

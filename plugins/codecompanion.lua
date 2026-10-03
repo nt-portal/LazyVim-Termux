@@ -1,3 +1,8 @@
+-- CodeCompanion — AI chat, inline edits, dan agent mode di dalam Neovim.
+--
+-- API key dibaca dari environment variable, bukan ditulis di file ini.
+-- Lihat docs/LEARN.md untuk setup lengkapnya.
+
 return {
   {
     "olimorris/codecompanion.nvim",
@@ -6,7 +11,7 @@ return {
       "nvim-treesitter/nvim-treesitter",
     },
     opts = {
-      strategies = {
+      interactions = {
         chat = {
           adapter = "openai",
           -- adapter = "anthropic",
@@ -19,48 +24,51 @@ return {
         },
       },
       adapters = {
-        -- OpenAI (aktif)
-        openai = function()
-          return require("codecompanion.adapters").extend("openai", {
-            env = {
-              api_key = "YOUR_OPENAI_API_KEY",
-            },
-            schema = {
-              model = {
-                default = "gpt-4o",
+        http = {
+          -- OpenAI — aktif secara default
+          openai = function()
+            return require("codecompanion.adapters").extend("openai", {
+              env = {
+                api_key = "OPENAI_API_KEY",
               },
-            },
-          })
-        end,
+              schema = {
+                model = {
+                  default = "gpt-4o",
+                },
+              },
+            })
+          end,
 
-        -- Anthropic (uncomment adapter di atas & blok ini untuk pakai)
-        -- anthropic = function()
-        --   return require("codecompanion.adapters").extend("anthropic", {
-        --     env = {
-        --       api_key = "YOUR_ANTHROPIC_API_KEY",
-        --     },
-        --     schema = {
-        --       model = {
-        --         default = "claude-sonnet-4-20250514",
-        --       },
-        --     },
-        --   })
-        -- end,
+          -- Anthropic — aktifkan dengan membatalkan komentar adapter "anthropic" di atas
+          -- anthropic = function()
+          --   return require("codecompanion.adapters").extend("anthropic", {
+          --     env = {
+          --       api_key = "ANTHROPIC_API_KEY",
+          --     },
+          --     schema = {
+          --       model = {
+          --         default = "claude-sonnet-4-20250514",
+          --       },
+          --     },
+          --   })
+          -- end,
 
-        -- 9Router (uncomment adapter di atas & blok ini untuk pakai)
-        -- ["9router"] = function()
-        --   return require("codecompanion.adapters").extend("openai", {
-        --     env = {
-        --       url = "http://localhost:20128/v1",
-        --       api_key = "YOUR_9ROUTER_API_KEY",
-        --     },
-        --     schema = {
-        --       model = {
-        --         default = "VibeCodes",
-        --       },
-        --     },
-        --   })
-        -- end,
+          -- 9Router — lokal, aktifkan dengan membatalkan komentar adapter "9router" di atas
+          -- ["9router"] = function()
+          --   return require("codecompanion.adapters").extend("openai_compatible", {
+          --     env = {
+          --       url = "http://localhost:20128",
+          --       chat_url = "/v1/chat/completions",
+          --       api_key = "NINEROUTER_API_KEY",
+          --     },
+          --     schema = {
+          --       model = {
+          --         default = "VibeCodes",
+          --       },
+          --     },
+          --   })
+          -- end,
+        },
       },
     },
   },

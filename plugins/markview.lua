@@ -1,3 +1,5 @@
+-- markview.nvim — render Markdown langsung di buffer Neovim.
+
 return {
   {
     "OXY2DEV/markview.nvim",

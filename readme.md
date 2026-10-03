@@ -26,37 +26,130 @@
 curl -sL https://raw.githubusercontent.com/nt-portal/LazyVim-Termux/main/install.sh | bash
 ```
 
-> Script otomatis: `pkg install` deps, `mkdir -p` semua path (anti-blank), backup skip-jika-tidak-ada, deploy `plugins/` modular.
+Yang dilakukan script:
 
-## 📖 Dokumentasi Lengkap
+1. Install dependency: `neovim` `nodejs` `yarn` `fd` `grep` `clang` `curl` `git`
+2. Backup konfigurasi lama ke `.bak` (dilewati kalau belum ada)
+3. Clone [LazyVim starter](https://github.com/LazyVim/starter)
+4. Deploy konfigurasi plugin dari [`plugins/`](./plugins/) ke `~/.config/nvim/lua/plugins/`
+5. Install JetBrainsMono Nerd Font
+6. Buka Neovim — Lazy.nvim mengunduh plugin sisanya secara otomatis
 
-Panduan cara pakai semua fitur, keybinding, ganti provider AI, dan troubleshooting:
+<details>
+<summary>Fork repo ini?</summary>
 
-**👉 [docs/LEARN.md](./docs/LEARN.md)**
+Ganti baris `REPO` di [install.sh](./install.sh) dengan username dan nama repo milikmu:
+
+```bash
+REPO="username/nama-repo"
+```
+
+</details>
+
+---
+
+## 🔑 Setup API Key
+
+Repo ini **tidak menyimpan API key**. Semua key dibaca dari environment variable, jadi aman di-commit dan tidak hilang saat reinstall.
+
+```bash
+# Tambahkan ke ~/.bashrc
+export OPENAI_API_KEY="sk-proj-xxxxxxxx"
+```
+
+Lalu reload shell: `source ~/.bashrc`.
+
+Untuk memakai provider lain, lihat [docs/LEARN.md](./docs/LEARN.md#-ganti-provider-ai).
+
+---
 
 ## ✨ Features
 
 | | Detail |
 |---|---|
-| 🛡️ **Anti-blank** | `mkdir -p ~/.config ~/.termux ~/.cache` + backup `|| true` |
+| 🛡️ **Anti-blank** | `mkdir -p` untuk semua path, backup pakai `\|\| true` |
 | 🧩 **Modular** | Semua plugin terpisah di [`plugins/`](./plugins/) — mudah dibaca |
-| 🔤 **Font** | JetBrainsMono Nerd Font via `assest/font.ttf` |
-| ⚡ **Performa** | `noice.nvim` + `nvim-notify` dimatikan |
-| 🔧 **Deps lengkap** | `neovim` `nodejs` `yarn` `fd` `grep` `clang` `curl` `git` |
+| 🔑 **Aman** | API key lewat environment variable, nol secret di repo |
+| 🎨 **Dracula** | Tema gelap + background transparan |
+| 🤖 **AI siap pakai** | CodeCompanion (chat & agent) + Minuet (ghost text) |
+| 🔤 **Font** | JetBrainsMono Nerd Font via [`assest/font.ttf`](./assest/font.ttf) |
+| ⚡ **Performa** | `noice.nvim` + `nvim-notify` dimatikan untuk hemat RAM |
+| ⚡ **Navigasi** | Oil, Harpoon, Flash untuk berpindah file dan posisi cepat |
+
+---
 
 ## 🔌 Plugins
 
-| Plugin | Status |
+### AI
+
+| Plugin | Fungsi |
 |---|---|
-| [wakatime/vim-wakatime](https://github.com/wakatime/vim-wakatime) | ✅ |
-| [OXY2DEV/markview.nvim](https://github.com/OXY2DEV/markview.nvim) | ✅ |
-| [xiyaowong/transparent.nvim](https://github.com/xiyaowong/transparent.nvim) | ✅ |
-| [Zeioth/markmap.nvim](https://github.com/Zeioth/markmap.nvim) | `Markmap*` cmds |
-| [olimorris/codecompanion.nvim](https://github.com/olimorris/codecompanion.nvim) | OpenAI adapter |
-| [milanglacier/minuet-ai.nvim](https://github.com/milanglacier/minuet-ai.nvim) | AI autocomplete |
-| [Mofiqul/dracula.nvim](https://github.com/Mofiqul/dracula.nvim) | 🎨 Dracula theme |
-| [chikko80/error-lens.nvim](https://github.com/chikko80/error-lens.nvim) | `LspAttach` |
-| [folke/noice.nvim](https://github.com/folke/noice.nvim) | ❌ disabled |
+| [olimorris/codecompanion.nvim](https://github.com/olimorris/codecompanion.nvim) | AI chat, inline edit, agent mode |
+| [milanglacier/minuet-ai.nvim](https://github.com/milanglacier/minuet-ai.nvim) | Ghost text / AI autocomplete |
+
+### Navigasi & File
+
+| Plugin | Fungsi |
+|---|---|
+| [stevearc/oil.nvim](https://github.com/stevearc/oil.nvim) | File manager di dalam buffer |
+| [ThePrimeagen/harpoon](https://github.com/ThePrimeagen/harpoon) | Bookmark & lompat antar file |
+| [folke/flash.nvim](https://github.com/folke/flash.nvim) | Lompat ke posisi kode dengan 2 tombol |
+| [stevearc/aerial.nvim](https://github.com/stevearc/aerial.nvim) | Outline fungsi/class di sidebar |
+
+### Edit & Refactor
+
+| Plugin | Fungsi |
+|---|---|
+| [kylechui/nvim-surround](https://github.com/kylechui/nvim-surround) | Bungkus teks dengan (), [], "" |
+| [monaqa/dial.nvim](https://github.com/monaqa/dial.nvim) | Tambah/kurangi angka, tanggal, boolean |
+| [gbprod/yanky.nvim](https://github.com/gbprod/yanky.nvim) | Clipboard history & paste siklus |
+| [MagicDuck/grug-far.nvim](https://github.com/MagicDuck/grug-far.nvim) | Search & replace seluruh project |
+| [folke/todo-comments.nvim](https://github.com/folke/todo-comments.nvim) | Sorot & cari TODO, FIXME, HACK |
+
+### Task & Session
+
+| Plugin | Fungsi |
+|---|---|
+| [stevearc/overseer.nvim](https://github.com/stevearc/overseer.nvim) | Jalankan task: build, test, lint |
+| [folke/persistence.nvim](https://github.com/folke/persistence.nvim) | Simpan & pulihkan session kerja |
+
+### Tampilan
+
+| Plugin | Fungsi |
+|---|---|
+| [Mofiqul/dracula.nvim](https://github.com/Mofiqul/dracula.nvim) | Tema Dracula |
+| [xiyaowong/transparent.nvim](https://github.com/xiyaowong/transparent.nvim) | Background transparan |
+| [OXY2DEV/markview.nvim](https://github.com/OXY2DEV/markview.nvim) | Render Markdown di buffer |
+| [Zeioth/markmap.nvim](https://github.com/Zeioth/markmap.nvim) | Mind map dari Markdown |
+| [chikko80/error-lens.nvim](https://github.com/chikko80/error-lens.nvim) | Diagnostic inline |
+| [wakatime/vim-wakatime](https://github.com/wakatime/vim-wakatime) | Pelacak waktu coding |
+| [folke/noice.nvim](https://github.com/folke/noice.nvim) | ❌ Dinonaktifkan |
+
+---
+
+## 📖 Dokumentasi
+
+Panduan lengkap — keybinding, ganti provider AI, tips Termux, troubleshooting:
+
+**👉 [docs/LEARN.md](./docs/LEARN.md)**
+
+---
+
+## 📁 Struktur Repo
+
+```
+LazyVim-Termux/
+├── install.sh        # Installer satu baris
+├── plugins/          # Konfigurasi plugin, di-deploy ke ~/.config/nvim/lua/plugins/
+├── docs/LEARN.md     # Dokumentasi lengkap
+└── assest/font.ttf   # JetBrainsMono Nerd Font
+```
+
+---
+
+## 📄 License
+
+[GPL-3.0](./LICENSE)
 
 ---
 

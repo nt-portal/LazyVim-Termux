@@ -1,0 +1,10 @@
+# Secrets
+local.lua
+.env
+
+# Neovim backups
+*.bak
+
+# OS
+.DS_Store
+Thumbs.db
